@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: user-service
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}"
+  datasource:
+    url: jdbc:mysql://localhost:3306/userdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${USER_DB_USERNAME:root}
+    password: ${USER_DB_PASSWORD:Ijse@1234}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:12312312312312212212121211212221211211}
+    issuer: ${JWT_ISSUER:eca-mini-ecommerce}
+    expires-minutes: ${JWT_EXPIRES_MINUTES:240}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
